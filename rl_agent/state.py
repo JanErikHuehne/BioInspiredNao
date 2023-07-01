@@ -1,10 +1,10 @@
 import random 
 
 class State:
-    def __init__(self, joint_values, ball_position, goal_keeper_position, actions):
+    def __init__(self, joint_values, goal_keeper_position, actions):
         self.joint_values = joint_values
-        self.ball_position = ball_position
         self.goal_keeper_position = goal_keeper_position
+        self.actions = actions
         self.int_state = {a : {"visits": 0, "q_value": 0.0} for a in actions}
         self.last_action = None
 

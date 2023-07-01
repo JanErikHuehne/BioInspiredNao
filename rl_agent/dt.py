@@ -1,5 +1,5 @@
-
-
+from sklearn import tree
+from matplotlib import pyplot as plt
 class Experience:
     def __init__(self, input, output):
         self.input = input
@@ -7,10 +7,29 @@ class Experience:
     
     def __str__(self):
         return str(self.input + self.output)
-class DT:
-    def __init__(self,):
-        self.experiences = []
     
+
+import numpy as np 
+import state
+
+    
+class DT:
+    def __init__(self):
+        self.experiences = []
+        self.clf = None
+        
+    def update(self, ):
+      
+        dim = len(self.experiences[0].input)
+        inputs = np.empty((0,dim))
+        outputs = np.empty((0,1))
+        for exp in self.experiences:
+            inputs = np.append(inputs, np.array(exp.input)[np.newaxis, :], axis = 0)
+            outputs = np.append(outputs, np.array([[exp.output]]), axis = 0)
+        clf = tree.DecisionTreeRegressor()
+        clf = clf.fit(inputs, outputs)
+        self.clf = clf
+
     def add_experience(self, input, output):
         exp = Experience(input=input, output=output)  
         exists = False
@@ -19,4 +38,8 @@ class DT:
                 exists = True
         if not exists: 
             self.experiences.append(exp)
-      
+        
+    def predict(self, input):
+        prediction = self.clf.predict([np.array(input)])[0]
+        return prediction 
+        
