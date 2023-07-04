@@ -24,6 +24,7 @@ class DT:
         inputs = np.empty((0,dim))
         outputs = np.empty((0,1))
         for exp in self.experiences:
+            print(exp.input, exp.output)
             inputs = np.append(inputs, np.array(exp.input)[np.newaxis, :], axis = 0)
             outputs = np.append(outputs, np.array([[exp.output]]), axis = 0)
         clf = tree.DecisionTreeRegressor()
@@ -31,13 +32,15 @@ class DT:
         self.clf = clf
 
     def add_experience(self, input, output):
-        exp = Experience(input=input, output=output)  
+      
+        new_exp = Experience(input=input, output=output)  
         exists = False
         for exp in self.experiences:
             if np. array_equal(exp.input,input) and np. array_equal(exp.output, output):
                 exists = True
         if not exists: 
-            self.experiences.append(exp)
+            print("Adding ", new_exp.input, new_exp.output)
+            self.experiences.append(new_exp)
         
     def predict(self, input):
         prediction = self.clf.predict([np.array(input)])[0]
