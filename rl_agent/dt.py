@@ -34,7 +34,7 @@ class DT:
         exp = Experience(input=input, output=output)  
         exists = False
         for exp in self.experiences:
-            if exp.input == input and exp.output == output:
+            if np. array_equal(exp.input,input) and np. array_equal(exp.output, output):
                 exists = True
         if not exists: 
             self.experiences.append(exp)
