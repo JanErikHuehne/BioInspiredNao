@@ -1,12 +1,13 @@
 import random 
-
+import numpy as np 
 class State:
-    def __init__(self, joint_values, goal_keeper_position, actions):
+    def __init__(self, joint_values, goal_keeper_position, actions, terminal=False):
         self.joint_values = joint_values
         self.goal_keeper_position = goal_keeper_position
         self.actions = actions
         self.int_state = {a : {"visits": 0, "q_value": 0.0} for a in actions}
         self.last_action = None
+        self.terminal = False
 
     def choose_action(self,):
         """
@@ -14,7 +15,7 @@ class State:
         If multiple (s,a) pairs for this state have the same q-value, a random action out of these posibilities is selected. 
         """
         max_actions = []
-        max_q = 0
+        max_q = np.NINF
         for a in self.int_state:
             if self.int_state[a]["q_value"] >= max_q:
                 max_q = self.int_state[a]["q_value"]
@@ -36,4 +37,8 @@ class State:
         return total_visits
     
     def __str__(self,):
-        return self.int_state.__str__()
+        return "[Hip: {} Gk-Pos:{}]".format(self.joint_values[0], self.goal_keeper_position[0])
+    
+class Terminal_State:
+    def __str__(self) -> str:
+        return "Terminal"

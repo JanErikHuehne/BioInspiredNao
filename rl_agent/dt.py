@@ -1,5 +1,7 @@
 from sklearn import tree
 from matplotlib import pyplot as plt
+
+
 class Experience:
     def __init__(self, input, output):
         self.input = input
@@ -19,30 +21,30 @@ class DT:
         self.clf = None
         
     def update(self, ):
-      
-        dim = len(self.experiences[0].input)
-        inputs = np.empty((0,dim))
-        outputs = np.empty((0,1))
-        for exp in self.experiences:
-            print(exp.input, exp.output)
-            inputs = np.append(inputs, np.array(exp.input)[np.newaxis, :], axis = 0)
-            outputs = np.append(outputs, np.array([[exp.output]]), axis = 0)
-        clf = tree.DecisionTreeRegressor()
-        clf = clf.fit(inputs, outputs)
-        self.clf = clf
+        if self.experiences: 
+            dim = len(self.experiences[0].input)
+            inputs = np.empty((0,dim))
+            outputs = np.empty((0,1))
+            for exp in self.experiences:
+                inputs = np.append(inputs, np.array(exp.input)[np.newaxis, :], axis = 0)
+                outputs = np.append(outputs, np.array([[exp.output]]), axis = 0)
+            clf = tree.DecisionTreeRegressor(max_depth=5)
+            clf = clf.fit(inputs, outputs)
+            self.clf = clf
 
     def add_experience(self, input, output):
-      
         new_exp = Experience(input=input, output=output)  
         exists = False
         for exp in self.experiences:
-            if np. array_equal(exp.input,input) and np. array_equal(exp.output, output):
+            if exp.input == input and exp.output == output:
                 exists = True
         if not exists: 
-            print("Adding ", new_exp.input, new_exp.output)
             self.experiences.append(new_exp)
         
     def predict(self, input):
-        prediction = self.clf.predict([np.array(input)])[0]
-        return prediction 
+        if self.clf:
+            prediction = self.clf.predict([np.array(input)])[0]
+            return prediction
+        else: 
+            return 0 
         
