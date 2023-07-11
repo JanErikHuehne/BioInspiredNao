@@ -18,14 +18,19 @@ class State:
         max_q = np.NINF
         for a in self.int_state:
             if self.int_state[a]["q_value"] >= max_q:
+               
+                if self.int_state[a]["q_value"] > max_q:
+                    max_actions = [a]
+                else:
+                    max_actions.append(a)
                 max_q = self.int_state[a]["q_value"]
-                max_actions.append(a)
+
         if len(max_actions) > 1:
             selected_action = str(max_actions[random.randint(0, len(max_actions)-1)])
         else:
             selected_action = str(max_actions[0])
         return selected_action
-
+    
     def state_visited(self, action):
         self.int_state[action]["visits"] += 1
         self.last_action = action
